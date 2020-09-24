@@ -8160,8 +8160,8 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"yarnberry-expo-hoisting-limits@workspace:.":
+"yarnberry-expo-quickstarter@workspace:.":
   version: 0.0.0-use.local
-  resolution: "yarnberry-expo-hoisting-limits@workspace:."
+  resolution: "yarnberry-expo-quickstarter@workspace:."
   languageName: unknown
   linkType: soft

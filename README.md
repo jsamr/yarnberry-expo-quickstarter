@@ -1,3 +1,5 @@
+> :warning: **This repository uses expo for illustration purposes, but it works equally well with “vanilla” React Native**
+
 # Use Expo / React Native with Yarn 2 and Workspaces
 
 ## Goal
