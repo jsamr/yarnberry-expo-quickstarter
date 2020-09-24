@@ -1,5 +1,5 @@
 {
-  "name": "yarnberry-expo-hoisting-limits",
+  "name": "yarnberry-expo-quickstarter",
   "workspaces": [
     "packages/*"
   ]
