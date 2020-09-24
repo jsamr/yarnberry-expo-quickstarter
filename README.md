@@ -8,3 +8,5 @@ yarn workspace expo-client start
 Metro bundler will complain that it is unable to resolve "common" from
 "App.js". To avoid the failure, one can replace dependency `"common":
 "workspace:*"` in `expo-client/package.json` with `"file:../common"`.
+
+![](./failure.png)
