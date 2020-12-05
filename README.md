@@ -15,16 +15,7 @@ yarn workspace expo-client start
 
 ### Install yarn 2.3+
 
-You need yarn version 2.3+, or if you are reading this while it has not been released yet, built from source (PR 1843).
-This is required because we'll use a new feature, `hoistingLimits`, which resolves a lot of issues with React Native!
-
-#### From sources
-
-```
-yarn set version from sources --branch 1843
-```
-
-#### Latest
+You need yarn version 2.3+
 
 ```
 yarn set version berry
