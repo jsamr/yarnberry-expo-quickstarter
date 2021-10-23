@@ -1,5 +1,6 @@
 > :warning: **This repository uses expo for illustration purposes, but it works equally well with “vanilla” React Native**
 
+> Latest Expo SDK tested: **43**
 # Use Expo / React Native with Yarn 2 and Workspaces
 
 ## Goal
