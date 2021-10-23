@@ -31,7 +31,7 @@ nodeLinker: node-modules
 
 ### Setting up hoistingLimits
 
-In the workspace using React Native or Expo, add this to `package.json` file:
+In **the workspace using React Native or Expo**, add this to `package.json` file:
 
 ```jsonc
 {
@@ -51,32 +51,45 @@ This latest step will help metro identify how to resolve workspace dependencies 
 To address the issue of workspaces being symlinked by yarn, [we use the Proxy trick](https://github.com/facebook/metro/issues/1#issuecomment-453450709):
 
 ``` js
-const path = require('path');
+const path = require("path");
+const fs = require("fs");
+const { getDefaultConfig } = require("expo/metro-config");
 
-const commonModulePath = path.resolve(__dirname, '../common');
+const workspaces = fs.readdirSync(path.resolve(__dirname, "../"));
+const currentWorkspace = path.basename(__dirname);
 
-module.exports = {
-  projectRoot: __dirname,
-  watchFolders: [commonModulePath],
-  resolver: {
-    extraNodeModules: new Proxy(
-      {},
-      {
-        get: (target, name) => path.join(__dirname, `node_modules/${name}`)
-      }
-    )
-  },
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: true
-      }
-    })
-  }
-};
+module.exports = (async () => {
+  const expoMetroConfig = await getDefaultConfig(__dirname);
+  return {
+    ...expoMetroConfig,
+    projectRoot: __dirname,
+    watchFolders: workspaces
+      .filter((f) => f !== currentWorkspace)
+      .map((f) => path.join(__dirname, "../", f)),
+    resolver: {
+      extraNodeModules: new Proxy(
+        {},
+        {
+          get: (target, name) => path.join(__dirname, `node_modules/${name}`),
+        }
+      ),
+    },
+    transformer: {
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: true,
+        },
+      }),
+    },
+  };
+})();
 ```
 
-You'll need to replace `commonModulePath` with any workspace path you'd like to import.
-If you are having a pattern where all workspaces are under the same folder, you can automate the process easily.
+You will need to replace `commonModulePath` with any workspace path you'd like to import.
+If your project follows a pattern where all workspaces are under the same folder, you can automate the process easily.
 See [how it is implemented in this project](packages/expo-client/metro.config.js).
+
+> **Remark**: Extending `expo/metro-config` is required since Expo SDK 41 but
+> must not be used in a vanilla React Native projects or Expo SDK 40 and lower
+> versions.
