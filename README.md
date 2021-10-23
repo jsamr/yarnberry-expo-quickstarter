@@ -93,3 +93,52 @@ See [how it is implemented in this project](packages/expo-client/metro.config.js
 > **Remark**: Extending `expo/metro-config` is required since Expo SDK 41 but
 > must not be used in a vanilla React Native projects or Expo SDK 40 and lower
 > versions.
+
+### Support for EAS builds (Optional)
+
+EAS builds will *almost* work out of the box with one hurdle: the pre-build step. Because
+EAS will tamper with the `package.json` file to add required dependencies for the build step,
+and follow that with a `yarn install`, the latest will fail since **[yarn berry sets the immutable
+flag when the `CI` environment is present](https://github.com/yarnpkg/berry/discussions/3486)**.
+
+Fortunately, you can force the immutable flag off by setting the `YARN_ENABLE_IMMUTABLE_INSTALLS` env to `false`.
+Just patch your `eas.json` file:
+
+```diff
+diff --git a/packages/expo-client/eas.json b/packages/expo-client/eas.json
+index 15b318c..d142455 100644
+--- a/packages/expo-client/eas.json
++++ b/packages/expo-client/eas.json
+@@ -7,7 +7,11 @@
+     "preview": {
+       "distribution": "internal"
+     },
+-    "production": {}
++    "production": {
++      "env": {
++        "YARN_ENABLE_IMMUTABLE_INSTALLS": "false"
++      }
++    }
+   },
+   "submit": {
+     "production": {}
+```
+
+### Fixing duplicated React versions
+
+If you have mismatched React versions between your expo-client package and
+workspace dependencies, you will [run into
+failures](https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react). Make
+sure all React versions match. You can audit this with the below command:
+
+```
+yarn why react
+```
+
+If only one react version is resolved, you will be fine.
+You can also force the resolution to a specific version via the `resolutions`
+field of your root `package.json`. This can be done via the following command:
+
+```
+yarn set resolution -s react@npm 17.0.1
+```
