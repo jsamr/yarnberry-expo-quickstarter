@@ -99,7 +99,7 @@ See [how it is implemented in this project](packages/expo-client/metro.config.js
 
 EAS builds will *almost* work out of the box with one hurdle: the pre-build step. Because
 EAS will tamper with the `package.json` file to add required dependencies for the build step,
-and follow that with a `yarn install`, the latest will fail since **[yarn berry sets the immutable
+and engage with a `yarn install`. The latest will fail since **[yarn berry sets the immutable
 flag when the `CI` environment is present](https://github.com/yarnpkg/berry/discussions/3486)**.
 
 Fortunately, you can force the immutable flag off by setting the `YARN_ENABLE_IMMUTABLE_INSTALLS` env to `false`.
