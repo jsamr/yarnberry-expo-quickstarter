@@ -2,7 +2,9 @@
 
 # Use Expo / React Native with Yarn 2 and Workspaces
 
-> Latest tested Expo SDK: **43**
+> Latest tested Expo SDK: **44**  
+> Latest tested yarn version: **3.2.0**  
+> PRs welcome to upgrade Expo SDK and yarn versions.
 
 ## Goal
 
